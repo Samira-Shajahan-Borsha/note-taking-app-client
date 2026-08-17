@@ -1,0 +1,70 @@
+"use client";
+
+import { createColumnHelper } from "@tanstack/react-table";
+
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import type { INote } from "@/types/note.interface";
+import type { DataTableFeatures } from "@/lib/data-table-features";
+
+const columnHelper = createColumnHelper<DataTableFeatures, INote>();
+
+const formatDate = (value: string) =>
+    new Date(value).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    });
+
+const UserCell = ({ user }: { user: INote["user"] }) => {
+    if (typeof user === "string") {
+        return <div className="text-muted-foreground">{user}</div>;
+    }
+
+    return (
+        <div className="flex flex-col">
+            <span className="font-medium">{user.name || user.email || user._id}</span>
+            {user.email && (
+                <span className="text-xs text-muted-foreground">{user.email}</span>
+            )}
+        </div>
+    );
+};
+
+export const columns = columnHelper.columns([
+    columnHelper.accessor("title", {
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Title" />
+        ),
+        cell: ({ row }) => (
+            <div className="font-medium">{row.getValue("title")}</div>
+        ),
+    }),
+    columnHelper.accessor("content", {
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Content" />
+        ),
+        cell: ({ row }) => (
+            <div className="max-w-105 truncate text-muted-foreground">
+                {row.getValue("content")}
+            </div>
+        ),
+    }),
+    columnHelper.accessor("user", {
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="User" />
+        ),
+        cell: ({ row }) => <UserCell user={row.getValue("user")} />,
+    }),
+    columnHelper.accessor("createdAt", {
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Created" />
+        ),
+        cell: ({ row }) => formatDate(row.getValue("createdAt")),
+    }),
+    columnHelper.accessor("updatedAt", {
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Updated" />
+        ),
+        cell: ({ row }) => formatDate(row.getValue("updatedAt")),
+    }),
+]);

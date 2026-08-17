@@ -10,19 +10,18 @@ export const getMyProfileInfo = async (): Promise<IProfile | null> => {
         const authUserInfo = await getUserInfo();
 
         const response = await serverFetch.get(`/auth/me`, {
-            cache: "force-cache",
-            next: { tags: ["my-user-info"] },
+            cache: "no-store",
         });
         const result = await response.json();
 
-        const user = result.data?.user;
+        const user = result.data;
         if (!user) return null;
 
         if (authUserInfo?.userId !== user._id) {
             return null;
         }
 
-        return result.data;
+        return { user };
     } catch (error: any) {
         console.log(error);
         return null;

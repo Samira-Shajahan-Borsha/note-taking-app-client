@@ -4,13 +4,14 @@
 import { serverFetch } from "@/lib/server-fetch";
 import type { INoteResponse } from "@/types/note.interface";
 
-export const getMyNotes = async (
-    page = 1,
-    limit = 10,
+const fetchNotes = async (
+    endpoint: string,
+    page: number,
+    limit: number,
 ): Promise<INoteResponse | null> => {
     try {
         const response = await serverFetch.get(
-            `/note/my-notes?page=${page}&limit=${limit}`,
+            `${endpoint}?page=${page}&limit=${limit}`,
             { cache: "no-store" },
         );
         const result = await response.json();
@@ -28,3 +29,13 @@ export const getMyNotes = async (
         return null;
     }
 };
+
+export const getMyNotes = async (
+    page = 1,
+    limit = 10,
+): Promise<INoteResponse | null> => fetchNotes("/note/my-notes", page, limit);
+
+export const getAllNotes = async (
+    page = 1,
+    limit = 10,
+): Promise<INoteResponse | null> => fetchNotes("/note/all-notes", page, limit);

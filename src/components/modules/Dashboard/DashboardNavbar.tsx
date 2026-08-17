@@ -11,7 +11,7 @@ interface DashboardNavbarProps {
 const breadcrumbLabels: Record<string, string> = {
     "/dashboard/user/my-notes": "My Notes",
     "/dashboard/admin/my-notes": "My Notes",
-    "/dashboard/admin/notes": "All Notes",
+    "/dashboard/admin/all-notes": "All Notes",
     "/dashboard/admin/users": "Users",
     "/dashboard/admin/interests": "Interests",
     "/dashboard/posts": "Posts",

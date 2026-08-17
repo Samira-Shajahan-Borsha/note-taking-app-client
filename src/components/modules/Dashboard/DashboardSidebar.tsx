@@ -76,8 +76,8 @@ const DashboardSidebar = ({ profile }: DashboardSidebarProps) => {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
-                                        render={<Link href="/dashboard/admin/notes" />}
-                                        isActive={isActive("/dashboard/admin/notes")}
+                                        render={<Link href="/dashboard/admin/all-notes" />}
+                                        isActive={isActive("/dashboard/admin/all-notes")}
                                         tooltip="All Notes"
                                     >
                                         <FileText />

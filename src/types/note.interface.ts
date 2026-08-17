@@ -1,6 +1,8 @@
+import type { IUser } from "@/types/user.interface";
+
 export interface INote {
     _id: string;
-    user: string;
+    user: string | IUser;
     title: string;
     content: string;
     createdAt: string;
