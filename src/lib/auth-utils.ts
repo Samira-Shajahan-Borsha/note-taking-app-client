@@ -3,10 +3,11 @@ export type UserRole = "USER" | "ADMIN";
 export type RouteOwner = UserRole | "COMMON";
 
 const routeOwners: Record<string, RouteOwner> = {
+    "/dashboard/user": "USER",
+    "/dashboard/admin": "ADMIN",
+    "/dashboard/posts": "COMMON",
     "/dashboard": "COMMON",
-    "/notes": "COMMON",
-    "/admin": "ADMIN",
-    "/user": "USER",
+    "/note": "COMMON",
 };
 
 const authRoutes = ["/login", "/register"];
@@ -27,8 +28,8 @@ export function getRouteOwner(pathname: string): RouteOwner | null {
 
 export function getDefaultDashboardRoute(role: UserRole): string {
     const dashboardByRole: Record<UserRole, string> = {
-        USER: "/dashboard",
-        ADMIN: "/dashboard",
+        USER: "/dashboard/user/my-notes",
+        ADMIN: "/dashboard/admin/my-notes",
     };
 
     return dashboardByRole[role];

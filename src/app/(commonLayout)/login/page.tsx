@@ -90,7 +90,7 @@ export default function LoginPage() {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => handleDemoLogin('fahim@gmail.com', '1234@Fahim')} 
+                onClick={() => handleDemoLogin('samira@gmail.com', '1234@Samira')} 
                 disabled={isSubmitting}
               >
                 User Demo
