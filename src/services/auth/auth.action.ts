@@ -8,12 +8,18 @@ import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/li
 import { setCookie } from "@/services/auth/tokenHandlers";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
-import { loginValidationZodSchema } from "@/zod/auth.validation";
+import { loginValidationZodSchema, registerValidationZodSchema } from "@/zod/auth.validation";
 
 interface LoginPayload {
     email: string;
     password: string;
     redirect?: string | null;
+}
+
+interface RegisterPayload {
+    name: string;
+    email: string;
+    password: string;
 }
 
 export const loginAction = async (
@@ -122,6 +128,51 @@ export const loginAction = async (
                 process.env.NODE_ENV === "development"
                     ? error.message
                     : "Login Failed. You might have entered incorrect email or password.",
+        };
+    }
+};
+
+export const registerAction = async (
+    payload: RegisterPayload,
+): Promise<{ error?: string } | undefined> => {
+    try {
+        const validation = zodValidator(payload, registerValidationZodSchema);
+
+        if (!validation.success) {
+            return {
+                error: validation.error.issues[0]?.message || "Invalid data",
+            };
+        }
+
+        const validatedPayload = validation.data;
+
+        const res = await serverFetch.post("/auth/register", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(validatedPayload),
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+            return {
+                error: result.message || "Registration failed",
+            };
+        }
+
+        return undefined;
+    } catch (error: any) {
+        // Re-throw NEXT_REDIRECT errors so Next.js can handle them
+        if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+            throw error;
+        }
+        console.log(error);
+        return {
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : "Registration failed. Please try again.",
         };
     }
 };

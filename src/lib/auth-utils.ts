@@ -6,7 +6,14 @@ const routeOwners: Record<string, RouteOwner> = {
     "/dashboard": "COMMON",
     "/notes": "COMMON",
     "/admin": "ADMIN",
+    "/user": "USER",
 };
+
+const authRoutes = ["/login", "/register"];
+
+export function isAuthRoute(pathname: string): boolean {
+    return authRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
+}
 
 export function getRouteOwner(pathname: string): RouteOwner | null {
     for (const [route, owner] of Object.entries(routeOwners)) {
