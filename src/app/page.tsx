@@ -14,12 +14,12 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="lg">
                 Sign In
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="sm">
+              <Button size="lg">
                 Register
               </Button>
             </Link>
