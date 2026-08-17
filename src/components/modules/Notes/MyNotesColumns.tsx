@@ -1,10 +1,11 @@
 "use client";
 
 import { createColumnHelper } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { Button } from "@/components/ui/button";
+import ViewNoteDialog from "@/components/modules/Notes/ViewNoteDialog";
+import DeleteNoteDialog from "@/components/modules/Notes/DeleteNoteDialog";
+import EditNoteDialog from "@/components/modules/Notes/EditNoteDialog";
 import type { INote } from "@/types/note.interface";
 import type { DataTableFeatures } from "@/lib/data-table-features";
 
@@ -51,16 +52,14 @@ export const columns = columnHelper.columns([
     columnHelper.display({
         id: "actions",
         header: () => <span className="sr-only">Actions</span>,
-        cell: () => (
+        cell: ({ row }) => (
             <div className="flex items-center justify-end gap-1">
-                <Button variant="ghost" size="icon" type="button">
-                    <Pencil />
-                    <span className="sr-only">Edit</span>
-                </Button>
-                <Button variant="ghost" size="icon" type="button">
-                    <Trash2 />
-                    <span className="sr-only">Delete</span>
-                </Button>
+                <ViewNoteDialog note={row.original} />
+                <EditNoteDialog note={row.original} />
+                <DeleteNoteDialog
+                    noteId={row.original._id}
+                    noteTitle={row.original.title}
+                />
             </div>
         ),
     }),

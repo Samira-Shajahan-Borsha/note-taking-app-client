@@ -1,6 +1,5 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import MyNotesDataTable from "@/components/modules/Notes/MyNotesDataTable";
+import CreateNoteDialog from "@/components/modules/Notes/CreateNoteDialog";
 import { getMyNotes } from "@/services/note/note.action";
 
 interface MyNotesViewProps {
@@ -22,10 +21,7 @@ const MyNotesView = async ({ page, limit }: MyNotesViewProps) => {
                         Create and manage your personal notes.
                     </p>
                 </div>
-                <Button>
-                    <Plus />
-                    Create Note
-                </Button>
+                <CreateNoteDialog />
             </div>
 
             <MyNotesDataTable

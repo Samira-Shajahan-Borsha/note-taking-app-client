@@ -3,6 +3,9 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import ViewNoteDialog from "@/components/modules/Notes/ViewNoteDialog";
+import DeleteNoteDialog from "@/components/modules/Notes/DeleteNoteDialog";
+import EditNoteDialog from "@/components/modules/Notes/EditNoteDialog";
 import type { INote } from "@/types/note.interface";
 import type { DataTableFeatures } from "@/lib/data-table-features";
 
@@ -66,5 +69,19 @@ export const columns = columnHelper.columns([
             <DataTableColumnHeader column={column} title="Updated" />
         ),
         cell: ({ row }) => formatDate(row.getValue("updatedAt")),
+    }),
+    columnHelper.display({
+        id: "actions",
+        header: () => <span className="sr-only">Actions</span>,
+        cell: ({ row }) => (
+            <div className="flex items-center justify-end gap-1">
+                <ViewNoteDialog note={row.original} />
+                <EditNoteDialog note={row.original} />
+                <DeleteNoteDialog
+                    noteId={row.original._id}
+                    noteTitle={row.original.title}
+                />
+            </div>
+        ),
     }),
 ]);

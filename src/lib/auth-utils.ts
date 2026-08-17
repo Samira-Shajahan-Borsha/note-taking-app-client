@@ -7,6 +7,7 @@ const routeOwners: Record<string, RouteOwner> = {
     "/dashboard/admin": "ADMIN",
     "/dashboard/posts": "COMMON",
     "/dashboard": "COMMON",
+    "/note": "COMMON",
 };
 
 const authRoutes = ["/login", "/register"];
