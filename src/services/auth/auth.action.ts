@@ -5,7 +5,7 @@ import { parseCookie } from "cookie";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
 import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
-import { setCookie } from "@/services/auth/tokenHandlers";
+import { deleteCookie, setCookie } from "@/services/auth/tokenHandlers";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
 import { loginValidationZodSchema, registerValidationZodSchema } from "@/zod/auth.validation";
@@ -130,6 +130,17 @@ export const loginAction = async (
                     : "Login Failed. You might have entered incorrect email or password.",
         };
     }
+};
+
+export const logoutAction = async (): Promise<void> => {
+    try {
+        await serverFetch.post("/auth/logout");
+    } catch (error) {
+        console.log(error);
+    }
+
+    await deleteCookie("accessToken");
+    await deleteCookie("refreshToken");
 };
 
 export const registerAction = async (
