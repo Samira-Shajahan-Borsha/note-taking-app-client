@@ -94,7 +94,7 @@ const DashboardSidebar = ({ profile }: DashboardSidebarProps) => {
                                         <span>Users</span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
-                                <SidebarMenuItem>
+                               {/*  <SidebarMenuItem>
                                     <SidebarMenuButton
                                         render={<Link href="/dashboard/admin/interests" />}
                                         isActive={isActive("/dashboard/admin/interests")}
@@ -103,13 +103,13 @@ const DashboardSidebar = ({ profile }: DashboardSidebarProps) => {
                                         <Puzzle />
                                         <span>Interests</span>
                                     </SidebarMenuButton>
-                                </SidebarMenuItem>
+                                </SidebarMenuItem> */}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
                 )}
 
-                <SidebarGroup>
+                {/* <SidebarGroup>
                     <SidebarGroupLabel>Community</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -125,7 +125,7 @@ const DashboardSidebar = ({ profile }: DashboardSidebarProps) => {
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
-                </SidebarGroup>
+                </SidebarGroup> */}
             </SidebarContent>
 
             <SidebarFooter>
