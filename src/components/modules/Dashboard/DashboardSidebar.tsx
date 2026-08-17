@@ -86,8 +86,8 @@ const DashboardSidebar = ({ profile }: DashboardSidebarProps) => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
-                                        render={<Link href="/dashboard/admin/users" />}
-                                        isActive={isActive("/dashboard/admin/users")}
+                                        render={<Link href="/dashboard/admin/all-users" />}
+                                        isActive={isActive("/dashboard/admin/all-users")}
                                         tooltip="Users"
                                     >
                                         <Users />
