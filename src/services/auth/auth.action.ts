@@ -78,7 +78,7 @@ export const loginAction = async (
         await setCookie("accessToken", accessToken, {
             secure: true,
             httpOnly: true,
-            maxAge: 1000 * 60 * 60,
+            maxAge: 60 * 60,
             path: "/",
             sameSite: "none",
         });
@@ -86,7 +86,7 @@ export const loginAction = async (
         await setCookie("refreshToken", refreshToken, {
             secure: true,
             httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 90,
+            maxAge: 60 * 60 * 24 * 90,
             path: "/",
             sameSite: "none",
         });

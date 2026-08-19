@@ -1,33 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { getDefaultDashboardRoute, getRouteOwner, isAuthRoute, UserRole } from "@/lib/auth-utils";
-import { deleteCookie, getCookie } from "@/services/auth/tokenHandlers";
+
+const clearAuthCookies = (response: NextResponse) => {
+    response.cookies.delete("accessToken");
+    response.cookies.delete("refreshToken");
+};
 
 export async function proxy(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
-    const accessToken = (await getCookie("accessToken")) || null;
-
-    let userRole: UserRole | null = null;
-
-    if (accessToken) {
-        const verifiedToken: JwtPayload | string = jwt.verify(
-            accessToken,
-            process.env.JWT_ACCESS_TOKEN_SECRET as string,
-        );
-
-        if (typeof verifiedToken === "string") {
-            await deleteCookie("accessToken");
-            await deleteCookie("refreshToken");
-            return NextResponse.redirect(new URL("/login", request.url));
-        }
-
-        userRole = verifiedToken.role;
-    }
+    const accessToken = request.cookies.get("accessToken")?.value || null;
 
     const routeOwner = getRouteOwner(pathname);
-
     const isAuth = isAuthRoute(pathname);
+
+    let userRole: UserRole | null = null;
+    let tokenInvalid = false;
+
+    if (accessToken) {
+        try {
+            const verifiedToken: JwtPayload | string = jwt.verify(
+                accessToken,
+                process.env.JWT_ACCESS_TOKEN_SECRET as string,
+            );
+
+            if (typeof verifiedToken === "string") {
+                throw new Error("Invalid token");
+            }
+
+            userRole = verifiedToken.role;
+        } catch {
+            tokenInvalid = true;
+        }
+    }
+
+    // Rule 0. Token is expired/invalid → clear cookies and treat user as unauthenticated.
+    if (tokenInvalid) {
+        if (routeOwner === null) {
+            const response = NextResponse.next();
+            clearAuthCookies(response);
+            return response;
+        }
+
+        const response = NextResponse.redirect(new URL("/login", request.url));
+        clearAuthCookies(response);
+        return response;
+    }
 
     // Rule 1. User is logged in and trying to access auth route (login/register) redirect user to his default dashboard route.
     if (accessToken && isAuth) {
